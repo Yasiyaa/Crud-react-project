@@ -1,21 +1,32 @@
 import axios from "axios";
-import React, {useState} from "react";
+import React, { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UpdateStudent() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const showToastMessage = () => {
+    toast.info("Updated !", {
+      position: toast.POSITION.TOP_RIGHT,
+      
+    });
+  };
 
   function handleSubmit(event) {
     event.preventDefault();
     axios
-      .post("http://localhost:8081/create", { name, email })
+      .put("http://localhost:8081/update/" + id, { name, email })
       .then((res) => {
         console.log(res);
-        navigate("/");
+        showToastMessage();
+        
       })
       .catch((err) => console.log(err));
   }
@@ -46,6 +57,8 @@ function UpdateStudent() {
           </div>
 
           <button className="btn btn-success"> Submit</button>
+
+          <ToastContainer />
         </form>
       </div>
     </div>

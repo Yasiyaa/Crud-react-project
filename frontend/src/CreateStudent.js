@@ -1,13 +1,21 @@
 import axios from "axios";
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CreateStudent() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
+  const showToastMessage = () => {
+    toast.success("User added !", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  };
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -15,7 +23,7 @@ function CreateStudent() {
       .post("http://localhost:8081/create", { name, email })
       .then((res) => {
         console.log(res);
-        navigate("/");
+        showToastMessage();
       })
       .catch((err) => console.log(err));
   }
@@ -48,6 +56,7 @@ function CreateStudent() {
           <button className="btn btn-success"> Submit</button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }
